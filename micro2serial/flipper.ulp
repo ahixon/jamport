@@ -1,0 +1,23 @@
+#usage "<b>Horizontally Flip Selected Schematic Symbols</b><p>"
+       "NEED TO COPY LAYER FROM WIRE WOULD BE NICE; WOULD ALSO BE NICE TO MAKE SELECTION?<br><p>"
+       "<author>Alex Hixon</author>";
+
+real scale = 65024 / 0.2032;
+
+string cmd = "GRID MM; LAYER 77 FLIPPED_WIRES; ";
+string nextCmd;
+
+library(L) {
+  L.packages(P) {
+   P.wires(W) {
+    if (ingroup (W) > 0) {
+      if (W.layer == 21) {
+        sprintf (nextCmd, "WIRE %f (%f %f) (%f %f) ; ", u2mm(W.width), u2mm(W.x1) * -1.0, u2mm(W.y1), u2mm (W.x2) * -1.0, u2mm(W.y2));
+        cmd += nextCmd;
+      }
+     }
+   }
+ }
+}
+
+exit (cmd);
